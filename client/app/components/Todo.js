@@ -2,6 +2,7 @@
 import m from 'mithril';
 import className from 'classnames';
 import store from '../store';
+import TodoItem from './TodoItem';
 
 
 
@@ -12,10 +13,22 @@ import store from '../store';
 const Todo = {
 	controller() {
 		return {
-			// mobx values are observable.  Actually, like mithril's.  Wonder if I could skip mobx?
-			// Mobx may do more automatically, though.
-			todos: store.todos,
-		}
+			// So, this is the simplest way I can think of to do this.
+			// Hmmm.
+			// Note: In the Mithril tutorial, the Top Level View references its viewmodel directly,
+			// the Controller either constructing it directly or merely initializing it.
+			// So, making getters and mutators here, I'm effectively constructing the VM here.
+			// Pros: custom selectors are defined here.
+			// Cons: custom selectors are not lazy/observable.
+			// Mitigation: Expensive selectors should either be Reselects or attached directly to the store.
+			get todos() { return store.todos },
+			get currentTodo() { return store.currentTodo },
+
+			// Event Hooks.
+			// Remember, custom in Mithril is to make event handler factories,
+			// so if you don't have a todoItem you just () the first item.
+			onToggleItem: todoItem => () => store.toggleTodo( todoItem )
+		};
 	},
 
 	view( ctrl ) {
@@ -27,11 +40,13 @@ const Todo = {
 						<h3 className="panel-title">Current Tasks</h3>
 					</div>
 					<div className="list-group">
-						{ ctrl.todos.map( td => (
-							<div className={ className( 'list-group-item', {
-								'disabled': td.completed
-							})}>{ td.task }</div>
-						))}
+						{ ctrl.todos.map( td =>
+							<TodoItem
+								todo={ td }
+								isCurrent={ td === ctrl.currentTodo }
+								onClick={ ctrl.onToggleItem( td ) }
+								/>
+						)}
 					</div>
 				</div>
 			</div>

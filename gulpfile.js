@@ -35,7 +35,6 @@ const buildEnv = process.env.NODE_ENV;
 
 
 
-
 //////// General
 
 gulp.task( 'default', [ 'site' ]);
@@ -79,7 +78,7 @@ function site_scripts_main( watch ) {
 		;
 
 	if( buildEnv === 'production' ) {
-		bundler = bundler.transform( 'uglifyify' );
+		bundler = bundler.transform({ global: true }, 'uglifyify' );
 	}
 
 	if( watch ) {

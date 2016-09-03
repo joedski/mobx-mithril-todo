@@ -2,12 +2,12 @@
 import { observable, computed, autorun } from 'mobx';
 
 class TodoStore {
-	@observable todos = [];
-	@observable pendingRequests = 0;
-
 	constructor() {
 		autorun( () => console.log( this.report ) );
 	}
+
+	@observable todos = [];
+	@observable pendingRequests = 0;
 
 	@computed get completedTodosCount() {
 		return this.todos.filter(
@@ -20,7 +20,17 @@ class TodoStore {
 			return '<none>';
 		}
 
-		return `Next todo: ${ this.currentTodo.task } ` +
+		let currentTodo = this.currentTodo;
+		let currentTask;
+
+		if( currentTodo ) {
+			currentTask = currentTodo.task;
+		}
+		else {
+			currentTask = "(All done!)";
+		}
+
+		return `Next todo: ${ currentTask } ` +
 			`Progress: ${ this.completedTodosCount }/${ this.todos.length }`
 			;
 	}
@@ -30,12 +40,20 @@ class TodoStore {
 		return this.todos.find( t => t.completed === false );
 	}
 
+
+
+	//// Actions
+
 	addTodo( task ) {
 		this.todos.push({
 			task,
 			completed: false,
 			asignee: null,
 		});
+	}
+
+	toggleTodo( todoItem ) {
+		todoItem.completed = ! todoItem.completed;
 	}
 }
 

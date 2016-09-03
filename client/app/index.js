@@ -14,4 +14,10 @@ store.addTodo( "Determine if MobX is necessary like this with Mithril" );
 
 
 
+// A note: No real connections are made between Mithril and Mobx.
+// All that happens is:
+// - Mithril emits an event, scheduling a redraw.
+// - Hook calls an updater on the store.
+// - Store updates.
+// - Mithril redraw occurs.
 m.mount( document.querySelector( '#todo-app' ), Todo );
