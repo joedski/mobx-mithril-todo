@@ -20,15 +20,15 @@ class TodoStore {
 			return '<none>';
 		}
 
-		return `Next todo: ${ this.todos[ 0 ].task } ` +
+		return `Next todo: ${ this.currentTodo.task } ` +
 			`Progress: ${ this.completedTodosCount }/${ this.todos.length }`
 			;
 	}
 
-	// @computed get currentTodo() {
-	// 	// Get the first not completed item.
-	// 	return this.todos.find( t => t.completed === false );
-	// }
+	@computed get currentTodo() {
+		// Get the first not completed item.
+		return this.todos.find( t => t.completed === false );
+	}
 
 	addTodo( task ) {
 		this.todos.push({
