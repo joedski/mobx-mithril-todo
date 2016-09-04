@@ -1,7 +1,7 @@
 MobX (And Mithril)
 ==================
 
-Doing the Todo using MobX as the store and Mithril as the UI.
+Doing the Todo using MobX as the store and Mithril as the UI.  This was an exercise to learn MobX.  Mithril was just used because it's familiar.
 
 
 
