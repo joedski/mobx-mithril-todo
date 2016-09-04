@@ -8,9 +8,9 @@ Doing the Todo using MobX as the store and Mithril as the UI.  This was an exerc
 Analysis
 --------
 
-I haven't yet looked into doing `observer` support for Mithril, I'd only just started with MobX.  However, it probably doesn't have quite as efficient rendering due to this.  As Mithril and MobX are basically wholly separate in this setup, all the redraw is handled solely by Mithril's system.
+I haven't yet looked into doing `observer` support for Mithril, I'd only just started with MobX.  Because of this, it probably doesn't have quite as efficient rendering as an `observer`ed React component.  As Mithril and MobX are basically wholly separate in this setup, all the redraw is handled solely by Mithril's system.
 
-As Mithril's redraws are triggered by handling events rather than listening to data changes, this changes nothing on the Mithtril side.  This is also why Mithril works well with relatively dumb data stores, and why extra care must be taken with long running async operations.
+Since Mithril's redraws are triggered by handling events rather than listening to data changes, this changes nothing on the Mithtril side.  This is also why Mithril works well with relatively dumb data stores, and why extra care must be taken with long running async operations.
 
 Of course, in that case, you can just hook it to MobX's `autorun` or the like.  Determining whether you need to diff or full rerender is left as an exercise to the reader, but so long as you don't force an immediate render, Mithril will autobatch any calls `autorun` causes to `m.redraw` to just one actual redraw the next frame.  Natuarally, if you're executing multiple requests, you  may want to consider `m.startComputation` and `m.endComputation`, though in my experience, simply accounting for not having (yet) received data is better than deferring until you do have it.  Probably because most of the remote things I do are API server calls to remote servers...  Well.
 
